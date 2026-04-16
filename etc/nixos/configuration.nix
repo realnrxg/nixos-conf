@@ -165,6 +165,9 @@ fonts.packages = with pkgs; [
 	kitty
 	fastfetch
 	glew
+	libGLU
+	steam-run
+	freeglut
 	waybar
 	rofi
 	swaynotificationcenter
@@ -227,6 +230,11 @@ fonts.packages = with pkgs; [
 	rar
 	manga-tui	
 	wev
+	libGL
+	SDL2
+	SDL2_image
+	SDL2_mixer
+	SDL2_ttf
   ];
 
 #FLAKES
@@ -241,6 +249,7 @@ xdg.portal = {
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
       xdg-desktop-portal-hyprland
+      xdg-desktop-portal-wlr
     ];
   };
 
@@ -248,7 +257,10 @@ xdg.portal = {
 programs.hyprland = {
   enable = true;
   xwayland.enable = true;
-}; 
+};
+
+#XWAYLAND ENABLE
+programs.xwayland.enable = true;
 
 ## NVIDIA
 services.xserver.videoDrivers = [ "nvidia" ];
@@ -274,7 +286,7 @@ environment.sessionVariables = {
   GBM_BACKEND = "nvidia-drm";
   __GLX_VENDOR_LIBRARY_NAME = "nvidia";
   CURSOR_FLAGS = "--no-hardware-cursors"; 
-  SDL_VIDEODRIVER = "x11";
+  #SDL_VIDEODRIVER = "wayland,x11";
 };
 
 #DBUS

@@ -151,8 +151,8 @@ fonts.packages = with pkgs; [
     programs.thunar = {
     enable = true;
     plugins = with pkgs.xfce; [
-      thunar-archive-plugin
-      thunar-volman #USB AUTOMOUNT
+      pkgs.thunar-archive-plugin
+      pkgs.thunar-volman #USB AUTOMOUNT
     ];
   };
 
@@ -242,13 +242,32 @@ fonts.packages = with pkgs; [
 	openssl
 	fzf
 	mpv
+
+
+	#UPSCAYL
+	(symlinkJoin {
+      name = "upscayl-wrapped";
+      paths = [ upscayl ];
+      nativeBuildInputs = [ makeWrapper ]; # Use nativeBuildInputs for the wrapper tool
+      postBuild = ''
+        wrapProgram $out/bin/upscayl \
+          --add-flags "--disable-gpu-sandbox" \
+          --add-flags "--disable-features=UseOzonePlatform" \
+          --add-flags "--ozone-platform=x11"
+      '';
+    })
   ];
 
 #FLAKES
 nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
 #fish
-programs.fish.enable = true;
+programs.fish = {
+	enable = true;
+	shellAliases = {
+	ff = "fastfetch";
+     };
+  };
 
 ##PORTALS
 xdg.portal = {
@@ -275,6 +294,10 @@ services.xserver.videoDrivers = [ "nvidia" ];
 hardware.graphics = {
   enable = true;
   enable32Bit = true;
+  extraPackages = with pkgs; [
+	vulkan-loader
+	vulkan-validation-layers
+  ];
 };
 
 hardware.nvidia = {

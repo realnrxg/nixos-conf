@@ -235,6 +235,8 @@ fonts.packages = with pkgs; [
 	SDL2_image
 	SDL2_mixer
 	SDL2_ttf
+	openssl
+	fzf
   ];
 
 #FLAKES

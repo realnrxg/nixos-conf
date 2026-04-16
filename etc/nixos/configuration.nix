@@ -147,8 +147,14 @@ fonts.packages = with pkgs; [
     ];
   };
 
-  # Install firefox.
-  programs.firefox.enable = false;
+  #THUNAR
+    programs.thunar = {
+    enable = true;
+    plugins = with pkgs.xfce; [
+      thunar-archive-plugin
+      thunar-volman #USB AUTOMOUNT
+    ];
+  };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -193,7 +199,6 @@ fonts.packages = with pkgs; [
 	wlogout
 	cava
 	kdePackages.kate
-	thunar
 	unzip
 	unrar
 	flatpak
@@ -224,7 +229,6 @@ fonts.packages = with pkgs; [
 	lavat
 	playerctl
 	mapscii
-	thunar-archive-plugin
 	file-roller
 	zip
 	rar

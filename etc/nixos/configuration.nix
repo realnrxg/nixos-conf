@@ -25,9 +25,6 @@ boot.loader.timeout = 1;
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  #load hyprx
-  boot.kernelModules = [ "hid-hyperx" ];
-
   networking.hostName = "nixosbtw"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -46,6 +43,14 @@ boot.loader.timeout = 1;
     "x-scheme-handler/unknown" = "chromium.desktop";
   };
 };
+
+  #UDEV
+  services.udev.extraRules = ''
+  # HyperX Cloud III Wireless (HP Vendor ID 03f0)
+  SUBSYSTEM=="usb", ATTR{idVendor}=="03f0", ATTR{idProduct}=="05b7", MODE="0660", GROUP="input"
+  SUBSYSTEM=="hidraw", ATTRS{idVendor}=="03f0", ATTRS{idProduct}=="05b7", MODE="0660", GROUP="input"
+'';
+
 
   #HARDWARE UINPUT
   hardware.uinput.enable = true;

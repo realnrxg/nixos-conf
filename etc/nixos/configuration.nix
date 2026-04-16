@@ -247,6 +247,7 @@ fonts.packages = with pkgs; [
 	openssl
 	fzf
 	mpv
+	opencode-desktop
 
 
 	#UPSCAYL

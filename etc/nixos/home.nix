@@ -1,4 +1,4 @@
-{ pkgs, spicetify-nix, ... }:
+{ pkgs, spicetify-nix, venta,  ... }:
 
 let
   spicePkgs = spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
@@ -26,6 +26,7 @@ in
   };
 
   home.packages = with pkgs; [
+    venta.packages.${pkgs.stdenv.hostPlatform.system}.default
     kdePackages.qt6ct
     dconf
     glib

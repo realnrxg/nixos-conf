@@ -10,9 +10,10 @@
     };
 
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+    venta.url = "github:realnrxg/venta";
   };
 
-  outputs = { self, nixpkgs, home-manager, spicetify-nix, ... }: {
+  outputs = { self, nixpkgs, home-manager, spicetify-nix, venta, ... }: {
     nixosConfigurations.nixosbtw = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
 
@@ -27,7 +28,7 @@
 
           
           home-manager.extraSpecialArgs = {
-            inherit spicetify-nix;
+            inherit spicetify-nix venta;
           };
 
           home-manager.users.nrxg = import ./home.nix;

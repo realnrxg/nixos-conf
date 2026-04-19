@@ -248,6 +248,7 @@ fonts.packages = with pkgs; [
 	fzf
 	mpv
 	opencode-desktop
+	jq
 
 
 	#UPSCAYL

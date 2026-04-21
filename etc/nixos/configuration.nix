@@ -60,6 +60,17 @@ boot.loader.timeout = 1;
 
   #NIX LD
   programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    libGL
+    glib
+    libX11
+    libXext
+    libXcursor
+    libXrandr
+    libXi
+    fontconfig
+    freetype
+  ];
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -247,8 +258,8 @@ fonts.packages = with pkgs; [
 	openssl
 	fzf
 	mpv
-	opencode-desktop
 	jq
+	obs-studio
 
 
 	#UPSCAYL
@@ -304,6 +315,9 @@ hardware.graphics = {
   extraPackages = with pkgs; [
 	vulkan-loader
 	vulkan-validation-layers
+  ];
+  extraPackages32 = with pkgs.pkgsi686Linux; [
+  vulkan-loader
   ];
 };
 

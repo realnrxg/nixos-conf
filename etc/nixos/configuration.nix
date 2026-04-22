@@ -44,6 +44,13 @@ boot.loader.timeout = 1;
   };
 };
 
+#DISK
+fileSystems."/mnt/storage" = {
+    device = "/dev/disk/by-uuid/32b9b16a-7fed-446e-ab27-0119977e2391";
+    fsType = "ext4";
+    options = [ "defaults" "nofail" ];
+  };
+
   #UDEV
   services.udev.extraRules = ''
   # HyperX Cloud III Wireless (HP Vendor ID 03f0)
@@ -260,6 +267,8 @@ fonts.packages = with pkgs; [
 	mpv
 	jq
 	obs-studio
+	llama-cpp
+	ollama
 
 
 	#UPSCAYL

@@ -48,8 +48,11 @@ boot.loader.timeout = 1;
 fileSystems."/mnt/storage" = {
     device = "/dev/disk/by-uuid/32b9b16a-7fed-446e-ab27-0119977e2391";
     fsType = "ext4";
-    options = [ "defaults" "nofail" ];
+    options = [ "defaults" "nofail" "x-gvfs-show" ];
   };
+
+  #UDISKS2
+  services.udisks2.enable = true;
 
   #UDEV
   services.udev.extraRules = ''

@@ -272,6 +272,7 @@ fonts.packages = with pkgs; [
 	obs-studio
 	llama-cpp
 	ollama
+	lutris
 
 
 	#UPSCAYL

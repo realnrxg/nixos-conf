@@ -17,7 +17,7 @@
 "spacing": 3,
 "fixed-center": true,
 "ipc": true,
-"margin-top": 5,
+"margin-top": 3,
 "margin-left": 8,
 "margin-right": 8,
 
@@ -25,14 +25,12 @@
 	//"idle_inhibitor",
 	//"custom/separator#blank",
 	"clock",
-        "custom/separator#dot-blank",	
+	"custom/separator#blank",
 	"tray",
-        "custom/separator#blank",	
-        "hyprland/workspaces#alpha",
 	],
 
 "modules-center": [
-        "hyprland/window",
+	"hyprland/workspaces#kanji",
 	],
 
 "modules-right": [

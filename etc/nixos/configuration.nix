@@ -25,12 +25,24 @@ boot.loader.timeout = 1;
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  #IPTABLE
+  boot.kernelModules = [ "iptable_filter" "iptable_nat" "iptable_filter" ];
+
   networking.hostName = "nixosbtw"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain
+
+  #VPN
+  services.mullvad-vpn.enable = true;
+  services.mullvad-vpn.package = pkgs.mullvad-vpn;
+
+  #ANONSURF
+#services.anonsurf.enable = true;
+
+
 
   #BROWSER
   xdg.mime = {
@@ -234,6 +246,8 @@ fonts.packages = with pkgs; [
 	libglvnd
  	xorg-server
   	xwayland
+	wayland
+	wayland-protocols
 	gnome-themes-extra
 	glib
 	gsettings-desktop-schemas
@@ -270,8 +284,7 @@ fonts.packages = with pkgs; [
 	mpv
 	jq
 	obs-studio
-	llama-cpp
-	ollama
+	wf-recorder 
 	lutris
 	vulkan-tools
 	dxvk
@@ -279,6 +292,14 @@ fonts.packages = with pkgs; [
 	p7zip
 	tea
 	galculator
+	vscode
+	opencode
+	gnumake
+	tor-browser
+	tor
+	nftables
+	
+
 
 
 	#UPSCAYL

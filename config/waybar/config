@@ -1,6 +1,3 @@
-/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
-
-/* My Mostly Used waybar config incase you wonder :) */
 {
 "include": [
   "$HOME/.config/waybar/Modules",
@@ -10,11 +7,10 @@
   "$HOME/.config/waybar/UserModules",
   ],
 "layer": "bottom",
-//"mode": "dock",
 "exclusive": true,
 "passthrough": false,
 "position": "top",
-"spacing": 3,
+"spacing": 0,
 "fixed-center": true,
 "ipc": true,
 "margin-top": 3,
@@ -22,10 +18,7 @@
 "margin-right": 8,
 
 "modules-left": [
-	//"idle_inhibitor",
-	//"custom/separator#blank",
 	"clock",
-	"custom/separator#blank",
 	"tray",
 	],
 
@@ -34,14 +27,8 @@
 	],
 
 "modules-right": [
-        //"mpris",
-        //"custom/separator#dot-line",
-        "group/notify",	
-	"battery",
-	"custom/separator#blank",  
+	"group/notify",
 	"group/audio",
-	"custom/separator#blank",
 	"custom/power",
 	],
 }
-

@@ -2,5 +2,6 @@
   "dna_color": "{{colors.primary.default.hex}}",
   "corrupt_color": "#ff0000",
   "recover_color": "#00ff50",
-  "fps": 30
+  "fps": 30,
+  "show_stats": false
 }

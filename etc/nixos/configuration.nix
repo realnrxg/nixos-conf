@@ -284,7 +284,7 @@ fonts.packages = with pkgs; [
 	mpv
 	jq
 	obs-studio
-	wf-recorder 
+	obsidian
 	lutris
 	vulkan-tools
 	dxvk
@@ -298,6 +298,8 @@ fonts.packages = with pkgs; [
 	tor-browser
 	tor
 	nftables
+	gradle
+	jdk
 	
 
 

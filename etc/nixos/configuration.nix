@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, pkgs-stable, ... }:
 
 {
   imports =
@@ -39,8 +39,19 @@ boot.loader.timeout = 1;
   services.mullvad-vpn.enable = true;
   services.mullvad-vpn.package = pkgs.mullvad-vpn;
 
-  #ANONSURF
-#services.anonsurf.enable = true;
+  #docker
+  virtualisation.docker.enable = true;
+
+  #appimage
+  programs.appimage.enable = true;
+programs.appimage.binfmt = true;
+programs.appimage.package = pkgs.appimage-run.override { extraPkgs = pkgs: [
+pkgs.icu
+pkgs.libxcrypt-legacy
+#pkgs.python312
+#pkgs.python312Packages.torch
+]; };
+
 
 
 
@@ -48,11 +59,11 @@ boot.loader.timeout = 1;
   xdg.mime = {
   enable = true;
   defaultApplications = {
-    "text/html" = "chromium.desktop";
-    "x-scheme-handler/http" = "chromium.desktop";
-    "x-scheme-handler/https" = "chromium.desktop";
-    "x-scheme-handler/about" = "chromium.desktop";
-    "x-scheme-handler/unknown" = "chromium.desktop";
+    "text/html" = "helium.desktop";
+    "x-scheme-handler/http" = "helium.desktop";
+    "x-scheme-handler/https" = "helium.desktop";
+    "x-scheme-handler/about" = "helium.desktop";
+    "x-scheme-handler/unknown" = "helium.desktop";
   };
 };
 
@@ -178,7 +189,7 @@ fonts.packages = with pkgs; [
   users.users.nrxg = {
     isNormalUser = true;
     description = "nrxg";
-    extraGroups = [ "networkmanager" "wheel" "plugdev" "openrazer" "audio" "input"];
+    extraGroups = [ "networkmanager" "wheel" "plugdev" "openrazer" "audio" "input" "docker" ];
     shell = pkgs.fish;
     packages = with pkgs; [
     #  thunderbird
@@ -205,6 +216,7 @@ fonts.packages = with pkgs; [
   	btop
 	neovim
 	vesktop
+	pnpm
 	fish
 	kitty
 	fastfetch
@@ -251,8 +263,6 @@ fonts.packages = with pkgs; [
 	gnome-themes-extra
 	glib
 	gsettings-desktop-schemas
-	nvibrant
-	chromium
 	adwaita-icon-theme
 	qt6Packages.qt6ct
 	libsForQt5.qt5ct
@@ -266,9 +276,7 @@ fonts.packages = with pkgs; [
 	openrazer-daemon
 	razergenie
 	usbutils
-	lavat
 	playerctl
-	mapscii
 	file-roller
 	zip
 	rar
@@ -292,17 +300,24 @@ fonts.packages = with pkgs; [
 	p7zip
 	tea
 	galculator
-	vscode
 	opencode
-	gnumake
-	tor-browser
 	tor
 	nftables
 	gradle
 	jdk
-	
-
-
+	baobab
+	appimage-run
+	hyprsunset
+	ranger
+	#nodejs_22
+	pkgs-stable.nvibrant
+	libreoffice
+	libnotify
+	yt-dlp
+	vscode
+	cmake
+	gnumake
+	docker
 
 	#UPSCAYL
 	(symlinkJoin {

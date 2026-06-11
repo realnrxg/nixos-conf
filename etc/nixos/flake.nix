@@ -3,6 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    # Adding the stable branch here!
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
 
     helium = {
       url = "github:schembriaiden/helium-browser-nix-flake";
@@ -18,15 +20,24 @@
     venta.url = "github:realnrxg/venta";
   };
 
-  outputs = { self, nixpkgs, helium, home-manager, spicetify-nix, venta, ... }: {
+  outputs = { self, nixpkgs, nixpkgs-stable, helium, home-manager, spicetify-nix, venta, ... }@inputs: 
+  let
+    system = "x86_64-linux";
+    # Create the stable package set
+    pkgs-stable = import nixpkgs-stable {
+      inherit system;
+      config.allowUnfree = true;
+    };
+  in {
     nixosConfigurations.nixosbtw = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
+      inherit system;
+
+      # Pass pkgs-stable here so your modules can use it
+      specialArgs = { inherit inputs pkgs-stable; };
 
       modules = [
         ./configuration.nix
-
         home-manager.nixosModules.home-manager
-
         {
           environment.systemPackages = [
             helium.packages.x86_64-linux.default
@@ -34,11 +45,9 @@
 
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-
           home-manager.extraSpecialArgs = {
             inherit spicetify-nix venta;
           };
-
           home-manager.users.nrxg = import ./home.nix;
         }
       ];

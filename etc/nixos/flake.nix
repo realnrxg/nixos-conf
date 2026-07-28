@@ -18,9 +18,14 @@
 
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     venta.url = "github:realnrxg/venta";
+
+    mangowm = {
+	url = "github:mangowm/mango";
+	inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-stable, helium, home-manager, spicetify-nix, venta, ... }@inputs: 
+  outputs = { self, nixpkgs, nixpkgs-stable, helium, home-manager, spicetify-nix, venta, mangowm, ... }@inputs: 
   let
     system = "x86_64-linux";
     # Create the stable package set
@@ -37,6 +42,7 @@
 
       modules = [
         ./configuration.nix
+	mangowm.nixosModules.mango
         home-manager.nixosModules.home-manager
         {
           environment.systemPackages = [

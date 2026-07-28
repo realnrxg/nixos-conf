@@ -14,8 +14,8 @@ output_path = '~/.config/kitty/colors.conf'
 post_hook = "kill -SIGUSR1 $(pidof kitty)"
 
 [templates.hyprland]
-input_path = '~/.config/matugen/templates/hyprland-colors.conf'
-output_path = '~/.config/hypr/colors.conf'
+input_path = '~/.config/matugen/templates/hyprland-colors.lua'
+output_path = '~/.config/hypr/colors.lua'
 post_hook = 'hyprctl reload'
 
 [templates.gtk3]
@@ -46,4 +46,3 @@ output_path = '~/.config/venta/config.json'
 input_path = '~/.config/matugen/templates/matugen-cava'
 output_path = '~/.config/cava/config'
 post_hook = "pkill -USR1 cava"
-

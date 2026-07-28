@@ -5,6 +5,9 @@
 { config, pkgs, pkgs-stable, ... }:
 
 {
+
+disabledModules = [ "programs/wayland/mango.nix" ];
+
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
@@ -147,8 +150,15 @@ fonts.packages = with pkgs; [
   nerd-fonts.jetbrains-mono
   noto-fonts
   noto-fonts-cjk-sans
+  maple-mono.NF
 ];
 
+fonts.fontconfig = {
+  enable = true;
+  defaultFonts = {
+    monospace = [ "Maple Mono NF" ];
+  };
+};
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -208,6 +218,12 @@ fonts.packages = with pkgs; [
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+
+#ALLOW INSECURE PACKAGES 
+  nixpkgs.config.permittedInsecurePackages = [
+  "pnpm-10.29.2"
+];
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -222,7 +238,9 @@ fonts.packages = with pkgs; [
 	fastfetch
 	glew
 	libGLU
+	zotero
 	steam-run
+	#discord
 	freeglut
 	waybar
 	rofi
@@ -244,6 +262,7 @@ fonts.packages = with pkgs; [
 	ifuse
 	gvfs
 	hyprlock
+	hyprpicker
 	pavucontrol
 	matugen
 	wlogout
@@ -317,7 +336,8 @@ fonts.packages = with pkgs; [
 	vscode
 	cmake
 	gnumake
-	docker
+	nwg-look
+	
 
 	#UPSCAYL
 	(symlinkJoin {
@@ -360,6 +380,9 @@ programs.hyprland = {
   xwayland.enable = true;
 };
 
+#mangowm
+programs.mango.enable = true;
+
 #XWAYLAND ENABLE
 programs.xwayland.enable = true;
 
@@ -385,6 +408,9 @@ hardware.nvidia = {
   package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
 };
 
+hardware.nvidia-container-toolkit.enable = true;
+
+
 #ENVIROMENT
 environment.sessionVariables = {
   NIXOS_OZONE_WL = "1";
@@ -393,7 +419,7 @@ environment.sessionVariables = {
   XDG_SESSION_TYPE = "wayland";
   GBM_BACKEND = "nvidia-drm";
   __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-  CURSOR_FLAGS = "--no-hardware-cursors"; 
+  CURSOR_FLAGS = "--no-hardware-cursors";
   #SDL_VIDEODRIVER = "wayland,x11";
 };
 

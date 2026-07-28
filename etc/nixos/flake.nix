@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    # Adding the stable branch here!
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
 
     helium = {
@@ -28,7 +27,6 @@
   outputs = { self, nixpkgs, nixpkgs-stable, helium, home-manager, spicetify-nix, venta, mangowm, ... }@inputs: 
   let
     system = "x86_64-linux";
-    # Create the stable package set
     pkgs-stable = import nixpkgs-stable {
       inherit system;
       config.allowUnfree = true;
@@ -37,7 +35,6 @@
     nixosConfigurations.nixosbtw = nixpkgs.lib.nixosSystem {
       inherit system;
 
-      # Pass pkgs-stable here so your modules can use it
       specialArgs = { inherit inputs pkgs-stable; };
 
       modules = [

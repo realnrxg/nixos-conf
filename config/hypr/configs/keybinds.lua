@@ -5,15 +5,23 @@ hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(programs.terminal))
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind("SUPER + SHIFT + F", hl.dsp.exec_cmd("thunar"))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("rofi -show drun"))
-hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("~/.config/hypr/scripts/hyprlock.sh"))
+-- hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("rofi -show drun"))
+-- hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("~/.config/hypr/scripts/hyprlock.sh"))
+
+ -- QS Dynamic Island
+hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("qs ipc call dynamic-island toggleLauncher"))
+hl.bind("SUPER + G", hl.dsp.exec_cmd("qs ipc call dynamic-island toggleWallpaperPicker"))
+hl.bind("SUPER + ALT + G", hl.dsp.exec_cmd("qs ipc call dynamic-island toggleFastfetchPicker"))
+hl.bind("SUPER + H", hl.dsp.exec_cmd("qs ipc call dynamic-island setTimerPage"))
+hl.bind("SUPER + ALT + H", hl.dsp.exec_cmd("qs ipc call dynamic-island setCalendarPage"))
+hl.bind("SUPER + L", hl.dsp.exec_cmd("qs -n -p ~/.config/quickshell/lock/shell.qml"))
 
 hl.bind("SUPER + ALT + F", hl.dsp.window.fullscreen({ action = "toggle", mode = "maximized" }))
 hl.bind("SUPER + F", hl.dsp.window.fullscreen({ action = "toggle" }))
 
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh"))
-hl.bind("SUPER + G", hl.dsp.exec_cmd("~/.config/hypr/scripts/wppicker.sh"))
-hl.bind("SUPER + ALT + G", hl.dsp.exec_cmd("~/.config/hypr/scripts/FastFetchConf.sh"))
+-- hl.bind("SUPER + G", hl.dsp.exec_cmd("~/.config/hypr/scripts/wppicker.sh"))
+-- hl.bind("SUPER + ALT + G", hl.dsp.exec_cmd("~/.config/hypr/scripts/FastFetchConf.sh"))
 -- hl.bind(mainMod .. " + CTRL + B", hl.dsp.exec_cmd("~/.config/hypr/scripts/WaybarStyles.sh"))
 -- hl.bind(mainMod .. " + ALT + B", hl.dsp.exec_cmd("~/.config/hypr/scripts/WaybarLayout.sh"))
 

@@ -11,11 +11,13 @@ local programs = require("configs.programs")
 -- AUTOSTART
 hl.on("hyprland.start", function()
 hl.exec_cmd("nm-applet")
-hl.exec_cmd("waybar")
+hl.exec_cmd("qs")
 hl.exec_cmd("awww-daemon")
-hl.exec_cmd("swaync")
 hl.exec_cmd("nvibrant 614 614 614")
 hl.exec_cmd("sleep 1 && hyprctl setcursor Afterglow-cursors 24")
+-- start desktop portals so flatpak/GTK apps pick up the dark color-scheme
+hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP 2>/dev/null")
+hl.exec_cmd("systemctl --user start xdg-desktop-portal-hyprland.service xdg-desktop-portal-gtk.service")
 end)
 
 -- ENVIRONMENT VARIABLES

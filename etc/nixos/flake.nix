@@ -19,8 +19,8 @@
     venta.url = "github:realnrxg/venta";
 
     mangowm = {
-	url = "github:mangowm/mango";
-	inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:mangowm/mango";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -34,18 +34,16 @@
   in {
     nixosConfigurations.nixosbtw = nixpkgs.lib.nixosSystem {
       inherit system;
-
       specialArgs = { inherit inputs pkgs-stable; };
 
       modules = [
         ./configuration.nix
-	mangowm.nixosModules.mango
+        mangowm.nixosModules.mango
         home-manager.nixosModules.home-manager
         {
           environment.systemPackages = [
             helium.packages.x86_64-linux.default
           ];
-
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.extraSpecialArgs = {

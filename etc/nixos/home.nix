@@ -50,6 +50,12 @@ in
       package = null;
       size = 24;
     };
+    gtk4 = {
+      extraConfig = {
+        gtk-theme-name = "Adwaita-dark";
+        gtk-application-prefer-dark-theme = true;
+      };
+    };
   };
 
   dconf.settings = {

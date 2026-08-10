@@ -8,7 +8,6 @@ Item {
 
     property string mode: "idle"
     property string title: ""
-    property string body: ""
     property string artist: ""
     property string artUrl: ""
     property bool playing: false
@@ -38,7 +37,6 @@ Item {
     signal previousRequested
     signal playPauseRequested
     signal nextRequested
-    signal favoriteRequested
     signal dismissRequested
     signal seekRequested(real position)
     signal handleStyleRequested(string style)

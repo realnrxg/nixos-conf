@@ -4,12 +4,10 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
-
     helium = {
       url = "github:schembriaiden/helium-browser-nix-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,9 +20,14 @@
       url = "github:mangowm/mango";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    aagl = {
+      url = "github:ezKEa/aagl-gtk-on-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-stable, helium, home-manager, spicetify-nix, venta, mangowm, ... }@inputs: 
+  outputs = { self, nixpkgs, nixpkgs-stable, helium, home-manager, spicetify-nix, venta, mangowm, aagl, ... }@inputs: 
   let
     system = "x86_64-linux";
     pkgs-stable = import nixpkgs-stable {
@@ -39,6 +42,7 @@
       modules = [
         ./configuration.nix
         mangowm.nixosModules.mango
+        aagl.nixosModules.default
         home-manager.nixosModules.home-manager
         {
           environment.systemPackages = [

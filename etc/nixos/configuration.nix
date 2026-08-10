@@ -14,6 +14,19 @@
     ./hardware-configuration.nix
   ];
 
+  #CACHIX
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    substituters = [
+      "https://cache.nixos.org"
+      "https://ezkea.cachix.org"
+    ];
+    trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI="
+    ];
+  };
+
   # Bootloader.
   boot.loader.systemd-boot.enable = false;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -30,7 +43,7 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # IPTABLE
-  boot.kernelModules = [ "iptable_filter" "iptable_nat" "iptable_filter" ];
+  boot.kernelModules = [ "iptable_filter" "iptable_nat" "iptable_filter"];
 
   networking.hostName = "nixosbtw"; # Define your hostname.
 
@@ -50,6 +63,14 @@
       pkgs.libxcrypt-legacy
     ];
   };
+
+
+  #AAGL
+  programs.honkers-railway-launcher.enable = true;
+
+
+  #AAL ALL ANIME
+  programs.anime-games-launcher.enable = true;
 
   # BROWSER
   xdg.mime = {
@@ -186,6 +207,13 @@
     packages = with pkgs; [ ];
   };
 
+  #OBS
+  programs.obs-studio = {
+  enable = true;
+  plugins = with pkgs.obs-studio-plugins; [
+  ];
+};
+
   # THUNAR
   programs.thunar = {
     enable = true;
@@ -281,7 +309,6 @@
     fzf
     mpv
     jq
-    obs-studio
     obsidian
     vulkan-tools
     dxvk

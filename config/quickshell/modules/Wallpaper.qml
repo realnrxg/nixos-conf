@@ -11,7 +11,6 @@ Item {
     required property string fontFamily
 
     signal closeRequested()
-    signal wallpaperSelectionChanged(string fileName)
 
     readonly property string wallpaperDir: Quickshell.env("HOME") + "/Pictures/wallpapers"
     readonly property string wallpaperLink: Quickshell.env("HOME") + "/.config/hypr/current_wallpaper"
@@ -232,7 +231,6 @@ Item {
                 const entry = view.currentIndex >= 0 ? wallModel.get(view.currentIndex) : null;
                 const name = entry ? String(entry.fileName || "") : "";
                 root.selectedWallpaper = name;
-                root.wallpaperSelectionChanged(name);
 
                 if (view.currentIndex >= 0)
                     view.positionViewAtIndex(view.currentIndex, ListView.Center);

@@ -9,9 +9,6 @@ import Quickshell.Wayland
 Scope {
     id: root
 
-    signal wallpaperSelected(string fileName)
-    signal fastfetchSelected(string baseName)
-
     property string mode: "idle"
     property string title: "Ready"
     property string artist: ""
@@ -121,6 +118,8 @@ Scope {
                 return island.timerHeight + 20;
             if (root.quickMenuOpen && root.quickMenuPage === "calendar")
                 return island.calendarHeight + 20;
+            if (root.quickMenuOpen && root.quickMenuPage === "weather")
+                return island.weatherHeight + 20;
             return root.mediaHeight;
         default:
             if (root.interactionOpen)
@@ -294,11 +293,6 @@ Scope {
     function mediaNext() {
         if (root.activePlayer?.canGoNext)
             root.activePlayer.next();
-    }
-
-    function mediaToggleFavorite() {
-
-
     }
 
     function maybeShowMediaFromPlayer(preferredPlayer, force) {
@@ -644,7 +638,7 @@ Scope {
         visible: true
 
         WlrLayershell.namespace: "dynamic-island"
-        WlrLayershell.layer: WlrLayer.Top
+        WlrLayershell.layer: root.visualMode === "toast" ? WlrLayer.Overlay : WlrLayer.Top
 
         anchors {
             top: true
@@ -727,7 +721,6 @@ Scope {
                 onPreviousRequested: root.mediaPrevious()
                 onPlayPauseRequested: root.mediaTogglePlaying()
                 onNextRequested: root.mediaNext()
-                onFavoriteRequested: root.mediaToggleFavorite()
                 onDismissRequested: {
                     root.mediaHoverSuppressed = true;
                     root.showIdle();
@@ -737,9 +730,7 @@ Scope {
                 onTrayCloseRequested: root.setQuickMenu(false)
                 onLauncherCloseRequested: root.setLauncher(false)
                 onWallpaperCloseRequested: root.setWallpaper(false)
-                onWallpaperSelected: fileName => root.wallpaperSelected(fileName)
                 onFastfetchCloseRequested: root.setFastfetch(false)
-                onFastfetchSelected: baseName => root.fastfetchSelected(baseName)
             }
 
             HyprlandFocusGrab {
@@ -969,6 +960,15 @@ Scope {
         function setCalendarPage(): void {
             root.setQuickMenu(true);
             root.quickMenuPage = "calendar";
+        }
+
+        function toggleWeather(): void {
+            if (root.quickMenuOpen && root.quickMenuPage === "weather") {
+                root.setQuickMenu(false);
+            } else {
+                root.setQuickMenu(true);
+                root.quickMenuPage = "weather";
+            }
         }
 
         function startTimer(minutes: string): void {

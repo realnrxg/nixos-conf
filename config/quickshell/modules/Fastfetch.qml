@@ -11,7 +11,6 @@ Item {
     required property string fontFamily
 
     signal closeRequested()
-    signal fastfetchSelectionChanged(string baseName)
 
     readonly property string fastfetchDir: Quickshell.env("HOME") + "/.config/fastfetch/icons"
     readonly property string fastfetchConfigsDir: Quickshell.env("HOME") + "/.config/fastfetch/configs"
@@ -239,7 +238,6 @@ Item {
                 const entry = view.currentIndex >= 0 ? wallModel.get(view.currentIndex) : null;
                 const base = entry ? String(entry.baseName || "") : "";
                 root.selectedFastfetch = base;
-                root.fastfetchSelectionChanged(base);
 
                 if (view.currentIndex >= 0)
                     view.positionViewAtIndex(view.currentIndex, ListView.Center);

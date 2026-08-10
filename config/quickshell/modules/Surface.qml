@@ -6,14 +6,9 @@ Item {
     id: root
 
     property string mode: "idle"
-    property string appName: ""
     property string title: ""
-    property string body: ""
     property string artist: ""
     property string artUrl: ""
-    property int volume: 0
-    property bool muted: false
-    property bool volumeIndicatorVisible: false
     property bool playing: false
     property bool canGoPrevious: false
     property bool canTogglePlaying: false
@@ -45,16 +40,13 @@ Item {
     signal previousRequested
     signal playPauseRequested
     signal nextRequested
-    signal favoriteRequested
     signal dismissRequested
     signal seekRequested(real position)
     signal handleStyleRequested(string style)
     signal trayCloseRequested
     signal launcherCloseRequested
     signal wallpaperCloseRequested
-    signal wallpaperSelected(string fileName)
     signal fastfetchCloseRequested
-    signal fastfetchSelected(string baseName)
     signal setTotalRequested(int seconds)
     signal adjustRequested(int deltaSeconds)
     signal startPauseRequested
@@ -64,6 +56,7 @@ Item {
     readonly property real settingsHeight: settingsContent.implicitHeight
     readonly property real timerHeight: timerContent.implicitHeight
     readonly property real calendarHeight: calendarContent.implicitHeight
+    readonly property real weatherHeight: weatherContent.implicitHeight
 
     function notifScroll(delta) {
         if (notifContent && notifContent.visible)
@@ -246,148 +239,6 @@ Item {
             opacity: 0
         }
 
-        Canvas {
-            id: volumeTrace
-
-            z: 8
-            anchors.fill: parent
-            opacity: root.volumeIndicatorVisible ? 1 : 0
-
-            function perimeterPoints() {
-                const inset = Math.max(1.5, Math.min(4, height * 0.22, width * 0.08));
-                const left = inset;
-                const right = Math.max(left + 1, width - inset);
-                const openTop = Math.min(height - inset - 1, Math.max(inset + 1, height * 0.18));
-                const bottom = Math.max(openTop + 1, height - inset);
-                const radius = Math.max(0, Math.min(root.bottomRadius - inset, (right - left) / 2));
-                const arcSteps = 10;
-                const points = [
-                    {
-                        x: left,
-                        y: openTop
-                    },
-                    {
-                        x: left,
-                        y: bottom - radius
-                    }
-                ];
-
-                for (let i = 0; i <= arcSteps; i += 1) {
-                    const angle = Math.PI - i / arcSteps * Math.PI / 2;
-                    points.push({
-                        x: left + radius + Math.cos(angle) * radius,
-                                y: bottom - radius + Math.sin(angle) * radius
-                    });
-                }
-
-                points.push({
-                    x: right - radius,
-                    y: bottom
-                });
-
-                for (let i = 0; i <= arcSteps; i += 1) {
-                    const angle = Math.PI / 2 - i / arcSteps * Math.PI / 2;
-                    points.push({
-                        x: right - radius + Math.cos(angle) * radius,
-                                y: bottom - radius + Math.sin(angle) * radius
-                    });
-                }
-
-                points.push({
-                    x: right,
-                    y: openTop
-                });
-                return points;
-            }
-
-            function distance(a, b) {
-                const dx = b.x - a.x;
-                const dy = b.y - a.y;
-
-                return Math.sqrt(dx * dx + dy * dy);
-            }
-
-            function tracePath(ctx, progress) {
-                const points = perimeterPoints();
-                let total = 0;
-
-                for (let i = 1; i < points.length; i += 1)
-                    total += distance(points[i - 1], points[i]);
-
-                ctx.beginPath();
-                ctx.moveTo(points[0].x, points[0].y);
-
-                if (total <= 0 || progress <= 0)
-                    return;
-
-                const target = total * Math.max(0, Math.min(1, progress));
-                let walked = 0;
-
-                for (let i = 1; i < points.length; i += 1) {
-                    const previous = points[i - 1];
-                    const current = points[i];
-                    const segment = distance(previous, current);
-
-                    if (walked + segment >= target) {
-                        const t = segment === 0 ? 0 : (target - walked) / segment;
-
-                        ctx.lineTo(previous.x + (current.x - previous.x) * t, previous.y + (current.y - previous.y) * t);
-                        return;
-                    }
-
-                    ctx.lineTo(current.x, current.y);
-                    walked += segment;
-                }
-            }
-
-            onPaint: {
-                const ctx = getContext("2d");
-                const progress = root.muted ? 0 : Math.max(0, Math.min(1, root.volume / 100));
-
-                ctx.reset();
-                ctx.clearRect(0, 0, width, height);
-                ctx.lineWidth = 2;
-                ctx.lineCap = "round";
-                ctx.lineJoin = "round";
-
-                ctx.strokeStyle = "rgba(190, 190, 190, 0.22)";
-                tracePath(ctx, 1);
-                ctx.stroke();
-
-                if (progress > 0) {
-                    ctx.strokeStyle = "rgba(245, 245, 245, 0.92)";
-                    tracePath(ctx, progress);
-                    ctx.stroke();
-                }
-            }
-
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: 160
-                    easing.type: Easing.OutCubic
-                }
-            }
-
-            onWidthChanged: requestPaint()
-            onHeightChanged: requestPaint()
-            onVisibleChanged: requestPaint()
-            Connections {
-                target: root
-
-                function onVolumeChanged() {
-                    volumeTrace.requestPaint();
-                }
-
-                function onMutedChanged() {
-                    volumeTrace.requestPaint();
-                }
-
-                function onVolumeIndicatorVisibleChanged() {
-                    volumeTrace.requestPaint();
-                }
-            }
-        }
-
         Content {
             z: 10
             anchors.fill: parent
@@ -398,7 +249,6 @@ Item {
             handleStyle: root.handleStyle
             forceExpanded: root.forceExpanded
                 title: root.title
-                body: root.body
                 artist: root.artist
                 artUrl: root.artUrl
                 playing: root.playing
@@ -418,7 +268,6 @@ Item {
                 onPreviousRequested: root.previousRequested()
                 onPlayPauseRequested: root.playPauseRequested()
                 onNextRequested: root.nextRequested()
-                onFavoriteRequested: root.favoriteRequested()
                 onDismissRequested: root.dismissRequested()
                 onSeekRequested: position => root.seekRequested(position)
                 onHandleStyleRequested: style => root.handleStyleRequested(style)
@@ -526,6 +375,23 @@ Item {
             }
         }
 
+        Weather {
+            id: weatherContent
+
+            z: 10
+            anchors.fill: parent
+            anchors.margins: 10
+            opacity: root.mode === "tray" && root.quickMenuPage === "weather" ? 1 : 0
+            visible: opacity > 0
+            fontFamily: root.fontFamily
+
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: 180
+                }
+            }
+        }
+
         Toast {
             id: toastContent
 
@@ -566,7 +432,6 @@ Item {
             open: root.mode === "wallpaper"
             fontFamily: root.fontFamily
             onCloseRequested: root.wallpaperCloseRequested()
-            onWallpaperSelectionChanged: fileName => root.wallpaperSelected(fileName)
         }
 
         Fastfetch {
@@ -578,7 +443,6 @@ Item {
             open: root.mode === "fastfetch"
             fontFamily: root.fontFamily
             onCloseRequested: root.fastfetchCloseRequested()
-            onFastfetchSelectionChanged: baseName => root.fastfetchSelected(baseName)
         }
     }
 

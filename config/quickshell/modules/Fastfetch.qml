@@ -33,12 +33,16 @@ Item {
 
     property string selectedFastfetch: ""
     property string activeFastfetch: ""
+<<<<<<< HEAD
     property bool positionedOnce: false
+=======
+>>>>>>> 8fdee4c (fixed wp picker and ff picker)
 
     function stripExt(filename) {
         return String(filename || "").replace(/\.[^.]+$/, "");
     }
 
+<<<<<<< HEAD
     function readCurrentFastfetchName() {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", "file://" + root.fastfetchLink, false);
@@ -74,6 +78,10 @@ Item {
         const idx = root.currentFastfetchIndex();
         view.currentIndex = idx >= 0 ? idx : 0;
         view.positionViewAtIndex(view.currentIndex, ListView.Center);
+=======
+    function resolveActiveFastfetch() {
+        linkReader.exec(["readlink", "-f", root.fastfetchLink]);
+>>>>>>> 8fdee4c (fixed wp picker and ff picker)
     }
 
     function applyFastfetch(filePath) {
@@ -129,9 +137,16 @@ Item {
 
     onOpenChanged: {
         if (root.open) {
+<<<<<<< HEAD
             root.positionedOnce = false;
             Qt.callLater(() => {
                 root.positionOnOpen();
+=======
+            Qt.callLater(() => {
+                view.currentIndex = 0;
+                view.positionViewAtIndex(0, ListView.Beginning);
+                root.resolveActiveFastfetch();
+>>>>>>> 8fdee4c (fixed wp picker and ff picker)
                 view.forceActiveFocus();
             });
         }
@@ -280,10 +295,17 @@ Item {
 
                 Rectangle {
                     anchors.fill: parent
+<<<<<<< HEAD
                     radius: 12
                     color: "#0a0a0a"
                     border.width: 1
                     border.color: isCurrent ? "#3a3a3a" : (hovered ? "#262626" : "#1a1a1a")
+=======
+                    radius: 0
+                    color: "#0a0a0a"
+                    border.width: isActive ? 2 : 1
+                    border.color: isActive ? "#22c55e" : (isCurrent ? "#3a3a3a" : (hovered ? "#262626" : "#1a1a1a"))
+>>>>>>> 8fdee4c (fixed wp picker and ff picker)
                     clip: true
 
                     Behavior on border.color {
@@ -357,7 +379,11 @@ Item {
 
                     Rectangle {
                         anchors.fill: parent
+<<<<<<< HEAD
                         radius: 12
+=======
+                        radius: 0
+>>>>>>> 8fdee4c (fixed wp picker and ff picker)
                         border.width: isCurrent ? 1.5 : 0
                         border.color: isCurrent ? "#73ffffff" : "transparent"
                         color: "transparent"
@@ -383,7 +409,11 @@ Item {
                         radius: 7.5
                         color: "#99000000"
                         border.width: 1
+<<<<<<< HEAD
                         border.color: "#2effffff"
+=======
+                        border.color: "#22c55e"
+>>>>>>> 8fdee4c (fixed wp picker and ff picker)
 
                         Row {
                             anchors.centerIn: parent
@@ -433,5 +463,30 @@ Item {
                 view.loadingNext = false;
             }
         }
+<<<<<<< HEAD
+=======
+
+        Process {
+            id: linkReader
+
+            stdout: StdioCollector {
+                id: linkCollector
+
+                waitForEnd: true
+            }
+
+            onExited: function(exitCode, exitStatus) {
+                if (exitCode !== 0)
+                    return;
+
+                const target = String(linkCollector.text || "").trim();
+
+                if (target === "")
+                    return;
+
+                root.activeFastfetch = root.stripExt(target.split("/").pop());
+            }
+        }
+>>>>>>> 8fdee4c (fixed wp picker and ff picker)
     }
 }

@@ -50,10 +50,8 @@ PopupWindow {
         if (!entry || !entry.hasChildren)
             return;
         root.menuStack.push(opener.menu);
-        opener.menu = entry.menu;
+        opener.menu = entry;
         root.cursorIndex = 0;
-        if (typeof opener.menu.updateLayout === "function")
-            opener.menu.updateLayout();
     }
 
     function goBack() {

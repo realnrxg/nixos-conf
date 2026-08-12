@@ -21,24 +21,28 @@ Item {
     property int armedIndex: -1
 
     readonly property int trayCount: root.trayItems.length
-    readonly property bool sniMenuOpen: menuPopupWindow.visible
+    // QsMenuAnchor renders a real platform menu window outside of our own
+    // window stack, so there's no window instance to expose here anymore -
+    // sniMenuOpen just tracks whether it's currently shown.
+    readonly property bool sniMenuOpen: menuAnchor.visible
 
     function openAppMenu(item, itemDelegate) {
         if (!item || !item.hasMenu)
             return;
 
-        menuPopupWindow.menuHandle = item.menu;
-        menuPopupWindow.anchorItem = itemDelegate;
-        menuPopupWindow.visible = true;
+        menuAnchor.menu = item.menu;
+        menuAnchor.anchor.item = itemDelegate;
+        menuAnchor.open();
     }
 
-    MenuPopup {
-        id: menuPopupWindow
+    QsMenuAnchor {
+        id: menuAnchor
 
-        fontFamily: root.fontFamily
+        anchor.window: root.QsWindow.window
+        anchor.edges: Edges.Bottom
+        anchor.gravity: Edges.Bottom
+        anchor.adjustment: PopupAdjustment.FlipY | PopupAdjustment.SlideX | PopupAdjustment.SlideY
     }
-
-    readonly property MenuPopup menuWindow: menuPopupWindow
 
     function executePower(modelData) {
         if (!modelData)

@@ -32,7 +32,6 @@ Scope {
     property bool quickMenuOpen: false
     property string quickMenuPage: "tray"
     property bool sniMenuOpen: island.sniMenuOpen
-    property var sniMenuWindow: island.sniMenuWindow
     property int timerTotalSeconds: 0
     property int timerRemainingSeconds: 0
     property bool timerRunning: false
@@ -760,7 +759,7 @@ Scope {
             HyprlandFocusGrab {
                 id: quickMenuFocusGrab
 
-                windows: root.sniMenuOpen && root.sniMenuWindow ? [islandWindow, root.sniMenuWindow] : [islandWindow]
+                windows: [islandWindow]
                 onCleared: root.syncQuickMenuGrab()
             }
 

@@ -31,7 +31,6 @@ Item {
     property string fontFamily: "Maple Mono NF"
     readonly property bool expanded: mode !== "idle" || forceExpanded
     readonly property bool sniMenuOpen: trayContent.sniMenuOpen
-    readonly property var sniMenuWindow: trayContent.menuWindow
     readonly property real bottomRadius: Math.max(1, Math.min(height / 2, expanded ? Math.min(height * 0.28, 24) : Math.min(height * 0.42, 8)))
     readonly property real flareRadius: Math.max(1, root.expanded ? Math.min(root.height * 0.14, 16) : Math.min(root.height * 0.4, 10))
     readonly property color surfaceColor: !expanded && handleStyle === "strip" ? "#0c0c0c" : "#000000"
